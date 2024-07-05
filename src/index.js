@@ -30,6 +30,7 @@ app.post("/signup", async (req, res) => {
     if (existingUser) {
         res.send('User already exists. Please choose a different username.');
     } else {
+        res.send("you have sucsessfully registred ");
         const saltRounds = 10; 
         const hashedPassword = await bcrypt.hash(data.password, saltRounds);
 
@@ -41,14 +42,12 @@ app.post("/signup", async (req, res) => {
 
 });
 
-
 app.post("/login", async (req, res) => {
     try {
         const check = await collection.findOne({ name: req.body.username });
         if (!check) {
             res.send("User name cannot found")
         }
-        
         const isPasswordMatch = await bcrypt.compare(req.body.password, check.password);
         if (!isPasswordMatch) {
             res.send("wrong Password");
